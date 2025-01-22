@@ -1,5 +1,117 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'styles/landing.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" />
+{% endblock %}
 
 {% block content %}
-    <h1>Hello, World!</h1>
+  <header class="landing-header">
+    <nav class="nav-container">
+        <a href="{% url "index" %}">
+            <div class="logo">
+                <span class="material-symbols-rounded">dashboard</span>
+                Projects Box
+              </div>
+        </a>
+      <div class="nav-buttons">
+        <a href="#" class="login-btn">Войти</a>
+        <a href="#" class="register-btn">Регистрация</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero-section">
+      <div class="hero-content">
+        <h1>Управляйте проектами<br />с легкостью</h1>
+        <p class="hero-description">Современная система управления задачами и проектами для эффективной работы вашей команды</p>
+        <div class="hero-buttons">
+          <a href="#" class="cta-button">Начать бесплатно</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="{% static 'images/hero_bg.png' %}" alt="Dashboard Preview" />
+      </div>
+    </section>
+
+    <section id="features" class="features-section">
+      <h2>Основные возможности</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="material-symbols-rounded">task_alt</span>
+          <h3>Управление задачами</h3>
+          <p>Создавайте, назначайте и отслеживайте задачи в удобном канбан-формате</p>
+        </div>
+        <div class="feature-card">
+          <span class="material-symbols-rounded">calendar_month</span>
+          <h3>Календарное планирование</h3>
+          <p>Планируйте встречи и следите за важными датами в интерактивном календаре</p>
+        </div>
+        <div class="feature-card">
+          <span class="material-symbols-rounded">group</span>
+          <h3>Управление командой</h3>
+          <p>Организуйте работу команды и отслеживайте прогресс каждого участника</p>
+        </div>
+        <div class="feature-card">
+          <span class="material-symbols-rounded">analytics</span>
+          <h3>Аналитика проектов</h3>
+          <p>Анализируйте эффективность работы с помощью наглядных графиков и отчетов</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <div class="cta-content">
+        <h2>Готовы начать?</h2>
+        <p>Присоединяйтесь к тысячам команд, которые уже используют Minimal Dashboard</p>
+        <div class="cta-buttons">
+          <a href="#" class="cta-button">Создать аккаунт</a>
+          <a href="#" class="text-button">Уже есть аккаунт?</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="landing-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Minimal Dashboard</h4>
+        <p>Современная система управления проектами для эффективной работы</p>
+      </div>
+      <div class="footer-section">
+        <h4>Возможности</h4>
+        <ul>
+          <li>Управление задачами</li>
+          <li>Календарь</li>
+          <li>Команда</li>
+          <li>Аналитика</li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Ресурсы</h4>
+        <ul>
+          <li>Документация</li>
+          <li>Блог</li>
+          <li>Поддержка</li>
+          <li>API</li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Компания</h4>
+        <ul>
+          <li>О нас</li>
+          <li>Контакты</li>
+          <li>Политика конфиденциальности</li>
+          <li>Условия использования</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Minimal Dashboard. Все права защищены.</p>
+    </div>
+  </footer>
 {% endblock %}
