@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import date
 
 # Create your models here.
 
@@ -31,6 +32,22 @@ class Project(models.Model):
                                 null=True,
                                 blank=True,
                                 related_name='managed_projects')
+
+    def get_progress(self):
+        total_tasks = self.task_set.count()
+        if total_tasks == 0:
+            return 0
+        completed_tasks = self.task_set.filter(status=Task.Status.COMPLETED).count()
+        progress = round((completed_tasks / total_tasks) * 100)
+        return progress
+    
+    
+    def days_until_end(self):
+        today = date.today()
+        end_date = self.end_date
+        delta = end_date - today
+        return delta.days
+    
 
     def __str__(self):
         return self.title

@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load static custom_filters %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'styles/main.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/animations.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/dropdown.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/projects.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+  <div class="app-container">
+    <!-- Боковая панель -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="{% url "index" %}">
+          <div class="logo">
+            <span class="material-symbols-rounded">dashboard</span>
+            Projects Box
+          </div>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="{% url 'dashboard' %}" class="nav-item active">
+          <span class="material-symbols-rounded">grid_view</span>
+          <span>Обзор</span>
+        </a>
+        <a href="#" class="nav-item">
+          <span class="material-symbols-rounded">folder</span>
+          <span>Проекты</span>
+        </a>
+        <a href="#" class="nav-item">
+          <span class="material-symbols-rounded">task</span>
+          <span>Задачи</span>
+        </a>
+        <a href="#" class="nav-item">
+          <span class="material-symbols-rounded">group</span>
+          <span>Команда</span>
+        </a>
+        <a href="#" class="nav-item">
+          <span class="material-symbols-rounded">calendar_month</span>
+          <span>Календарь</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="avatar" />
+          <div class="user-info">
+            <h4>Алекс Миллер</h4>
+            <p>Дизайнер</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+      <header class="main-header">
+        <div class="search-bar">
+          <span class="material-symbols-rounded">search</span>
+          <input type="text" placeholder="Поиск..." />
+        </div>
+
+        <div class="header-actions">
+          <button class="icon-btn">
+            <span class="material-symbols-rounded">notifications</span>
+            <span class="badge">3</span>
+          </button>
+          <button class="icon-btn"><span class="material-symbols-rounded">settings</span></button>
+        </div>
+      </header>
+
+      <div class="content-wrapper">
+        <!-- Статистика -->
+        <section class="stats-section">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">
+                <span class="material-symbols-rounded">trending_up</span>
+              </div>
+              <div class="stat-info">
+                <h3>Активные проекты</h3>
+                <p class="stat-value">{{ projects_active }}</p>
+              </div>
+            </div>
+            <!-- Другие карточки статистики -->
+          </div>
+        </section>
+
+        <!-- Проекты -->
+        <section class="projects-section">
+          <div class="section-header">
+            <h2>Текущие проекты</h2>
+            <button class="primary-btn" data-action="create-project">
+              <span class="material-symbols-rounded">add</span>
+              Новый проект
+            </button>
+          </div>
+          <div class="projects-grid">
+            <!-- Карточки проектов -->
+            {% for project in project_data %}
+              <div class="project-card">
+                <div class="project-header">
+                  <div>
+                    <h3 class="project-title">{{ project.project.title }}</h3>
+                  </div>
+                  {% if project.project.status == 'AC' %}
+                    <span class="project-status status-active">Активный</span>
+                  {% elif project.project.status == 'CO' %}
+                    <span class="project-status status-completed">Завершен</span>
+                  {% else %}
+                    <span class="project-status status-paused">Приостановлен</span>
+                  {% endif %}
+                </div>
+
+                <div class="project-content">
+                  <p class="project-description">{{ project.project.description }}</p>
+
+                  <div class="project-dates">
+                    <div class="date-item">
+                      <span class="date-label">Начало:</span>
+                      <span class="date-value">{{ project.project.start_date }}</span>
+                    </div>
+                    <div class="date-item">
+                      <span class="date-label">Окончание:</span>
+                      <span class="date-value">{{ project.project.end_date }}</span>
+                    </div>
+                  </div>
+
+                  <div class="project-progress">
+                    <div class="progress-header">
+                      <span class="progress-label">Прогресс</span>
+                      <span class="progress-value">{{ project.progress }}%</span>
+                    </div>
+                    <div class="progress-bar">
+                      <div class="progress-fill" style="width: {{ project.progress }}%;"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="project-footer">
+                  <div class="team-members">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=John" alt="Team member" class="member-avatar" />
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Emily" alt="Team member" class="member-avatar" />
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Michael" alt="Team member" class="member-avatar" />
+                    <span class="more-members">+2</span>
+                  </div>
+                  <div class="project-deadline">
+                    <span class="material-symbols-rounded deadline-icon">schedule</span>
+                    {% if project.days_until_end > 0 %}
+                      {{ project.days_until_end }} дней
+                    {% elif project.days_until_end == 0 %}
+                      Сегодня
+                    {% elif project.days_until_end < 0 %}
+                      {% if project.project.status == 'CO' %}
+                        Завершен
+                      {% else %}
+                        Просрочено на {{ project.days_until_end|abs_value }} дней
+                      {% endif %}
+                    {% else %}
+                      Завершен
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+            <!-- Конец цикла -->
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+  <div class="popup" id="createProjectPopup">
+    <div class="popup-content">
+      <div class="popup-header">
+        <h2>Создать новый проект</h2>
+        <button class="close-popup"><span class="material-symbols-rounded">close</span></button>
+      </div>
+
+      <form id="createProjectForm" class="popup-form">
+        <div class="form-group">
+          <label for="projectName">Название проекта</label>
+          <input type="text" id="projectName" name="projectName" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+          <label for="projectDescription">Описание</label>
+          <textarea id="projectDescription" name="projectDescription" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="projectDeadline">Дедлайн</label>
+          <input type="date" id="projectDeadline" name="projectDeadline" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+          <label for="projectStatus">Статус</label>
+          <select id="projectStatus" name="projectStatus" class="form-control" required>
+            <option value="active">Активный</option>
+            <option value="pending">В ожидании</option>
+            <option value="completed">Завершен</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Участники проекта</label>
+          <div class="team-select">
+            <div class="selected-members">
+              <!-- Сюда будут добавляться выбранные участники -->
+            </div>
+            <button type="button" class="btn-secondary add-member">
+              <span class="material-symbols-rounded">person_add</span>
+              Добавить участника
+            </button>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" onclick="closePopup()">Отмена</button>
+          <button type="submit" class="btn-primary">Создать проект</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <script src="{% static 'js/animations.js' %}"></script>
+  <script src="{% static 'js/popup.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,38 @@
+/* Стили для выпадающего меню */
+.dropdown-menu {
+  position: absolute;
+  background: var(--bg-primary);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  min-width: 180px;
+  z-index: 1000;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: var(--bg-secondary);
+}
+
+.dropdown-item.delete {
+  color: var(--danger);
+}
+
+.dropdown-item.delete:hover {
+  background: #ffe8e8;
+}
+
+.dropdown-item .material-symbols-rounded {
+  font-size: 1.25rem;
+}

@@ -1,0 +1,124 @@
+/* Основные анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Применение анимаций */
+.stat-card {
+  animation: slideUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+.stat-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.stat-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.stat-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.stat-card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.project-card {
+  animation: scaleIn 0.5s ease forwards;
+  opacity: 0;
+}
+
+/* Hover эффекты */
+.nav-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.nav-item:hover::after {
+  transform: translateX(0);
+}
+
+.icon-btn {
+  transform: scale(1);
+  transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+  transform: scale(1.05);
+}
+
+.icon-btn:active {
+  transform: scale(0.95);
+}
+
+/* Пульсация для уведомлений */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.badge {
+  animation: pulse 2s infinite;
+}
+
+/* Плавное появление выпадающих меню */
+.dropdown-menu {
+  animation: scaleIn 0.2s ease;
+  transform-origin: top right;
+}
+
+/* Эффект загрузки для прогресс-бара */
+@keyframes progressLoad {
+  from {
+    width: 0;
+  }
+}
+
+.progress-fill {
+  animation: progressLoad 1s ease;
+}

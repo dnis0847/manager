@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'styles/auth.css' %}" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded"
+  rel="stylesheet"
+/>
+{% endblock %}
+
+{% block content %}
+
+    <a href="{% url "index" %}" class="back-button">
+      <span class="material-symbols-rounded">arrow_back</span>
+      Вернуться на главную
+    </a>
+
+    <div class="auth-container">
+      <div class="auth-card">
+        <div class="auth-header">
+          <a href="{% url "index" %}" class="logo">
+            <span class="material-symbols-rounded">dashboard</span>
+            Projects Box
+          </a>
+          <h1>Создать аккаунт</h1>
+          <p>Заполните форму для регистрации</p>
+        </div>
+
+        <form class="auth-form" id="registerForm">
+          <div class="form-group">
+            <label for="firstName">Имя</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-rounded">person</span>
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                required
+                placeholder="Введите имя"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="lastName">Фамилия</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-rounded">person</span>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                required
+                placeholder="Введите фамилию"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-rounded">mail</span>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                placeholder="Введите email"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Пароль</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-rounded">lock</span>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                placeholder="Создайте пароль"
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                aria-label="Показать/скрыть пароль"
+              >
+                <span class="material-symbols-rounded">visibility</span>
+              </button>
+            </div>
+            <div class="password-strength">
+              <div class="strength-bar"></div>
+              <span class="strength-text">Надежность пароля</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Подтверждение пароля</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-rounded">lock</span>
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                required
+                placeholder="Повторите пароль"
+              />
+              <button
+                type="button"
+                class="toggle-password"
+                aria-label="Показать/скрыть пароль"
+              >
+                <span class="material-symbols-rounded">visibility</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-wrapper">
+              <input type="checkbox" name="terms" required />
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-text">
+                Я согласен с <a href="#">условиями использования</a> и
+                <a href="#">политикой конфиденциальности</a>
+              </span>
+            </label>
+          </div>
+
+          <button type="submit" class="auth-button">
+            <span class="material-symbols-rounded">person_add</span>
+            Создать аккаунт
+          </button>
+        </form>
+
+        <div class="auth-divider">
+          <span>или</span>
+        </div>
+
+        <div class="social-auth">
+          <button class="social-button google">
+            <img src="{% static 'images/google-icon.svg' %}" alt="Google" />
+            Регистрация через Google
+          </button>
+          <button class="social-button github">
+            <img src="{% static 'images/github-icon.svg' %}" alt="GitHub" />
+            Регистрация через GitHub
+          </button>
+        </div>
+
+        <p class="auth-footer">
+          Уже есть аккаунт?
+          <a href="{% url "login" %}">Войти</a>
+        </p>
+      </div>
+    </div>
+
+    <script src="{% static 'js/register.js' %}"></script>
+
+{% endblock %}
