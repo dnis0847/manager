@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="{% static 'styles/animations.css' %}" />
   <link rel="stylesheet" href="{% static 'styles/dropdown.css' %}" />
   <link rel="stylesheet" href="{% static 'styles/projects.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/pop-up.css' %}" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" />
 {% endblock %}
@@ -16,56 +17,16 @@
 {% block content %}
   <div class="app-container">
     <!-- Боковая панель -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <a href="{% url "index" %}">
-          <div class="logo">
-            <span class="material-symbols-rounded">dashboard</span>
-            Projects Box
-          </div>
-        </a>
-      </div>
-
-      <nav class="sidebar-nav">
-        <a href="{% url 'dashboard' %}" class="nav-item active">
-          <span class="material-symbols-rounded">grid_view</span>
-          <span>Обзор</span>
-        </a>
-        <a href="#" class="nav-item">
-          <span class="material-symbols-rounded">folder</span>
-          <span>Проекты</span>
-        </a>
-        <a href="#" class="nav-item">
-          <span class="material-symbols-rounded">task</span>
-          <span>Задачи</span>
-        </a>
-        <a href="#" class="nav-item">
-          <span class="material-symbols-rounded">group</span>
-          <span>Команда</span>
-        </a>
-        <a href="#" class="nav-item">
-          <span class="material-symbols-rounded">calendar_month</span>
-          <span>Календарь</span>
-        </a>
-      </nav>
-
-      <div class="sidebar-footer">
-        <div class="user-profile">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="avatar" />
-          <div class="user-info">
-            <h4>Алекс Миллер</h4>
-            <p>Дизайнер</p>
-          </div>
-        </div>
-      </div>
-    </aside>
+    {% include './sidebar.html' %}
 
     <!-- Основной контент -->
     <main class="main-content">
       <header class="main-header">
         <div class="search-bar">
-          <span class="material-symbols-rounded">search</span>
-          <input type="text" placeholder="Поиск..." />
+          <form class="form_search" method="GET" action="{% url 'dashboard' %}">
+            <input type="text" name="q" placeholder="Поиск..." value="{{ request.GET.q }}" />
+            <button class="search_button" type="submit"><span class="material-symbols-rounded">search</span></button>
+          </form>
         </div>
 
         <div class="header-actions">
@@ -87,7 +48,7 @@
               </div>
               <div class="stat-info">
                 <h3>Активные проекты</h3>
-                <p class="stat-value">{{ projects_active }}</p>
+                <p class="stat-value">{{ projects_active_count }}</p>
               </div>
             </div>
             <!-- Другие карточки статистики -->
@@ -98,10 +59,17 @@
         <section class="projects-section">
           <div class="section-header">
             <h2>Текущие проекты</h2>
-            <button class="primary-btn" data-action="create-project">
-              <span class="material-symbols-rounded">add</span>
-              Новый проект
-            </button>
+            {% if user_role == "EX" %}
+              <button disabled class="disabled-btn" data-action="create-project">
+                <span class="material-symbols-rounded">add</span>
+                Новый проект
+              </button>
+            {% else %}
+              <button class="primary-btn" data-action="create-project">
+                <span class="material-symbols-rounded">add</span>
+                Новый проект
+              </button>
+            {% endif %}
           </div>
           <div class="projects-grid">
             <!-- Карточки проектов -->
@@ -177,58 +145,9 @@
       </div>
     </main>
   </div>
-  <div class="popup" id="createProjectPopup">
-    <div class="popup-content">
-      <div class="popup-header">
-        <h2>Создать новый проект</h2>
-        <button class="close-popup"><span class="material-symbols-rounded">close</span></button>
-      </div>
+  <!-- Всплывающая форма добавления проекта -->
+  {% include './dashboard_popup.html' %}
 
-      <form id="createProjectForm" class="popup-form">
-        <div class="form-group">
-          <label for="projectName">Название проекта</label>
-          <input type="text" id="projectName" name="projectName" class="form-control" required />
-        </div>
-
-        <div class="form-group">
-          <label for="projectDescription">Описание</label>
-          <textarea id="projectDescription" name="projectDescription" class="form-control" rows="3"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="projectDeadline">Дедлайн</label>
-          <input type="date" id="projectDeadline" name="projectDeadline" class="form-control" required />
-        </div>
-
-        <div class="form-group">
-          <label for="projectStatus">Статус</label>
-          <select id="projectStatus" name="projectStatus" class="form-control" required>
-            <option value="active">Активный</option>
-            <option value="pending">В ожидании</option>
-            <option value="completed">Завершен</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Участники проекта</label>
-          <div class="team-select">
-            <div class="selected-members">
-              <!-- Сюда будут добавляться выбранные участники -->
-            </div>
-            <button type="button" class="btn-secondary add-member">
-              <span class="material-symbols-rounded">person_add</span>
-              Добавить участника
-            </button>
-          </div>
-        </div>
-
-        <div class="form-actions">
-          <button type="button" class="btn-secondary" onclick="closePopup()">Отмена</button>
-          <button type="submit" class="btn-primary">Создать проект</button>
-        </div>
-      </form>
-    </div>
-  </div>
   <script src="{% static 'js/animations.js' %}"></script>
   <script src="{% static 'js/popup.js' %}"></script>
 {% endblock %}
