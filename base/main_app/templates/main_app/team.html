@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'styles/main.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/animations.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/team.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+  <!-- Боковая панель -->
+  {% include './sidebar.html' %}
+  <!-- Основной контент -->
+  <main class="main-content">
+    <header class="main-header">
+        <div class="header-left">
+          <h1>Команда</h1>
+          <p class="subtitle">Управление командой и участниками проекта</p>
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn">
+            <span class="material-symbols-rounded">filter_list</span>
+          </button>
+          <button class="primary-btn">
+            <span class="material-symbols-rounded">person_add</span>
+            Добавить участника
+          </button>
+        </div>
+      </header>
+
+      <!-- Статистика команды -->
+      <div class="team-stats">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <span class="material-symbols-rounded">group</span>
+          </div>
+          <div class="stat-info">
+            <p>Всего участников</p>
+            <h3>12</h3>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon active">
+            <span class="material-symbols-rounded">pending</span>
+          </div>
+          <div class="stat-info">
+            <p>Активные задачи</p>
+            <h3>28</h3>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon completed">
+            <span class="material-symbols-rounded">task_alt</span>
+          </div>
+          <div class="stat-info">
+            <p>Завершенные задачи</p>
+            <h3>184</h3>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <span class="material-symbols-rounded">schedule</span>
+          </div>
+          <div class="stat-info">
+            <p>Среднее время выполнения</p>
+            <h3>3.2 дня</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Фильтры команды -->
+      <div class="team-filters">
+        <div class="filter-tabs">
+          <button class="filter-tab active">Все участники</button>
+          <button class="filter-tab">Дизайнеры</button>
+          <button class="filter-tab">Разработчики</button>
+          <button class="filter-tab">Менеджеры</button>
+        </div>
+        <div class="search-bar">
+          <span class="material-symbols-rounded">search</span>
+          <input type="text" placeholder="Поиск по команде..." />
+        </div>
+      </div>
+
+      <!-- Список команды -->
+      <div class="team-grid">
+        <!-- Карточки участников будут добавлены через JavaScript -->
+      </div>
+
+    <script src="{% static 'js/team.js' %}"></script>
+  </main>
+{% endblock %}

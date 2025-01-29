@@ -1,0 +1,61 @@
+<!-- Модальное окно редактирования задачи -->
+<div id="editTaskModal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Редактировать задачу</h2>
+    <form id="editTaskForm">
+      <input type="hidden" id="editTaskId" name="id" />
+      <div class="form-group">
+        <label for="editTaskTitle">Название</label>
+        <input type="text" id="editTaskTitle" name="title" required />
+      </div>
+      <div class="form-group">
+        <label for="editTaskDescription">Описание</label>
+        <textarea id="editTaskDescription" name="description" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="editTaskProject">Проект</label>
+        <select id="editTaskProject" name="project" required>
+          <option value="">Выберите проект</option>
+          {% for project in projects %}
+            <option value="{{ project.id }}">{{ project.title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editTaskPriority">Приоритет</label>
+        <select id="editTaskPriority" name="priority" required>
+          <option value="HI">Высокий</option>
+          <option value="ME">Средний</option>
+          <option value="LO">Низкий</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editTaskStatus">Статус</label>
+        <select id="editTaskStatus" name="status" required>
+          <option value="NS">Не начато</option>
+          <option value="IP">В процессе</option>
+          <option value="CO">Завершено</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="editTaskStartDate">Дата начала</label>
+        <input type="date" id="editTaskStartDate" name="start_date" required />
+      </div>
+      <div class="form-group">
+        <label for="editTaskEndDate">Дата окончания</label>
+        <input type="date" id="editTaskEndDate" name="end_date" required />
+      </div>
+      <div class="form-group">
+        <label for="editTaskAssignedTo">Назначено</label>
+        <select id="editTaskAssignedTo" name="assigned_to">
+          <option value="">Выберите исполнителя</option>
+          {% for user in users %}
+            <option value="{{ user.id }}">{{ user.username }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="primary-btn">Сохранить изменения</button>
+    </form>
+  </div>
+</div>

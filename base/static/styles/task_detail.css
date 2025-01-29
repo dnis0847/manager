@@ -1,0 +1,135 @@
+.task-detail {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.task-info {
+  flex: 1;
+  background: var(--bg-primary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+}
+
+.task-field {
+  margin-bottom: 1.5rem;
+}
+
+.task-field h3 {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.task-field p {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.task-status,
+.task-priority {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+}
+
+.task-status.NS {
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+.task-status.IP {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+.task-status.CO {
+  background: var(--success);
+  color: white;
+}
+
+.task-priority.HI {
+  background: var(--error);
+  color: white;
+}
+.task-priority.ME {
+  background: var(--warning);
+  color: white;
+}
+.task-priority.LO {
+  background: var(--success);
+  color: white;
+}
+
+.task-priority {
+  position: static;
+  width: fit-content;
+  height: 100%;
+  border-top-left-radius: var(--border-radius);
+  border-bottom-left-radius: var(--border-radius);
+}
+
+.task-comments {
+  flex: 1;
+  background: var(--bg-primary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+}
+
+.task-comments h2 {
+  margin-bottom: 1rem;
+}
+
+.comments-list {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+.comment {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.comment-author {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.comment-date {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.comment-text {
+  color: var(--text-primary);
+}
+
+.comment-form textarea {
+  width: 100%;
+  height: 100px;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius);
+  resize: vertical;
+  margin-bottom: 1rem;
+}
+
+.comment-form .primary-btn {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .task-detail {
+    flex-direction: column;
+  }
+}

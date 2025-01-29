@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'styles/main.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/tasks.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/projects-page.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/animations.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/dropdown.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/task_popup.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+  <!-- Боковая панель -->
+  {% include './sidebar.html' %}
+  <!-- Основной контент -->
+  <main class="main-content">
+    <header class="main-header">
+      <div class="header-left">
+        <h1>Задачи</h1>
+        <p class="subtitle">Управление задачами и отслеживание прогресса</p>
+      </div>
+      {% if user_role == 'EX' %}
+        <button class="disabled-btn" data-action="create-task">
+          <span class="material-symbols-rounded">add</span>
+          Новая задача
+        </button>
+      {% else %}
+        <button class="primary-btn" data-action="create-task">
+          <span class="material-symbols-rounded">add</span>
+          Новая задача
+        </button>
+      {% endif %}
+    </header>
+
+    <!-- Фильтры задач -->
+    <div class="tasks-filters">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-status="all">Все задачи</button>
+        <button class="filter-tab" data-status="NS">Не начато</button>
+        <button class="filter-tab" data-status="IP">В процессе</button>
+        <button class="filter-tab" data-status="CO">Завершено</button>
+      </div>
+      <div class="search-bar">
+        <form class="form_search" method="GET" action="{% url 'tasks' %}">
+          <input type="text" name="q" placeholder="Поиск..." value="{{ request.GET.q }}" />
+          <button class="search_button" type="submit"><span class="material-symbols-rounded">search</span></button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Статистика задач -->
+    <div class="tasks-stats">
+      <div class="stat-card">
+        <div class="stat-icon not-started">
+          <span class="material-symbols-rounded">assignment</span>
+        </div>
+        <div class="stat-info">
+          <p>Не начато</p>
+          <h3>{{ not_started_tasks_count }}</h3>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon in-progress">
+          <span class="material-symbols-rounded">pending_actions</span>
+        </div>
+        <div class="stat-info">
+          <p>В процессе</p>
+          <h3>{{ in_progress_tasks_count }}</h3>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon completed">
+          <span class="material-symbols-rounded">task_alt</span>
+        </div>
+        <div class="stat-info">
+          <p>Завершено</p>
+          <h3>{{ completed_tasks_count }}</h3>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon total">
+          <span class="material-symbols-rounded">format_list_bulleted</span>
+        </div>
+        <div class="stat-info">
+          <p>Всего задач</p>
+          <h3>{{ all_tasks_count }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Канбан доска -->
+    <div class="kanban-board">
+      <div class="kanban-column" data-status="NS">
+        <div class="column-header">
+          <h3>Не начато</h3>
+          <span class="task-count">{{ not_started_tasks_count }}</span>
+        </div>
+        <div class="task-list">
+          {% for task in task_data %}
+            {% if task.task.status == 'NS' %}
+              {% include 'main_app/task_card.html' with task=task %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="kanban-column" data-status="IP">
+        <div class="column-header">
+          <h3>В процессе</h3>
+          <span class="task-count">{{ in_progress_tasks_count }}</span>
+        </div>
+        <div class="task-list">
+          {% for task in task_data %}
+            {% if task.task.status == 'IP' %}
+              {% include 'main_app/task_card.html' with task=task %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      <div class="kanban-column" data-status="CO">
+        <div class="column-header">
+          <h3>Завершено</h3>
+          <span class="task-count">{{ completed_tasks_count }}</span>
+        </div>
+        <div class="task-list">
+          {% for task in task_data %}
+            {% if task.task.status == 'CO' %}
+              {% include 'main_app/task_card.html' with task=task %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Всплывающая форма добавления задачи -->
+    {% include './task_popup.html' %}
+
+    <!-- Всплывающая форма редактирования задачи -->
+    {% include './edit_task.html' %}
+
+    <script src="{% static 'js/tasks.js' %}"></script>
+    <script src="{% static 'js/animations.js' %}"></script>
+    <script src="{% static 'js/task_popup.js' %}"></script>
+    <script src="{% static 'js/task_menu.js' %}"></script>
+  </main>
+{% endblock %}

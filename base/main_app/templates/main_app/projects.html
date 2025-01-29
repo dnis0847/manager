@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load static custom_filters %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'styles/main.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/projects.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/animations.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/dropdown.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/projects-page.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/pop-up.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+  <!-- Боковая панель -->
+  {% include './sidebar.html' %}
+  <!-- Основной контент -->
+  <main class="main-content">
+    <header class="main-header">
+      <div class="header-left">
+        <h1>Все проекты</h1>
+        <p class="subtitle">Управление проектами</p>
+      </div>
+      <div class="header-actions">
+        {% if user_role == 'EX' %}
+          <button class="disabled-btn" data-action="create-project">
+            <span class="material-symbols-rounded">add</span>
+            Новый проект
+          </button>
+        {% else %}
+          <button class="primary-btn" data-action="create-project">
+            <span class="material-symbols-rounded">add</span>
+            Новый проект
+          </button>
+        {% endif %}
+      </div>
+    </header>
+
+    <!-- Фильтры проектов -->
+    <div class="projects-filters">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-status="all">Все проекты</button>
+        <button class="filter-tab" data-status="AC">Активные</button>
+        <button class="filter-tab" data-status="CO">Завершенные</button>
+        <button class="filter-tab" data-status="PA">Приостановленные</button>
+      </div>
+      <div class="search-bar">
+        <form class="form_search" method="GET" action="{% url 'projects' %}">
+          <input type="text" name="q" placeholder="Поиск..." value="{{ request.GET.q }}" />
+          <button class="search_button" type="submit"><span class="material-symbols-rounded">search</span></button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Статистика проектов -->
+    <div class="projects-stats">
+      <div class="stat-card">
+        <div class="stat-icon active">
+          <span class="material-symbols-rounded">rocket_launch</span>
+        </div>
+        <div class="stat-info">
+          <p>Активные проекты</p>
+          <h3>{{ active_projects_count }}</h3>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon completed">
+          <span class="material-symbols-rounded">task_alt</span>
+        </div>
+        <div class="stat-info">
+          <p>Завершенные</p>
+          <h3>{{ completed_projects_count }}</h3>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon paused">
+          <span class="material-symbols-rounded">pause_circle</span>
+        </div>
+        <div class="stat-info">
+          <p>Приостановленные</p>
+          <h3>{{ paused_projects_count }}</h3>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon total">
+          <span class="material-symbols-rounded">folder</span>
+        </div>
+        <div class="stat-info">
+          <p>Всего проектов</p>
+          <h3>{{ all_projects_count }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Сетка проектов -->
+    <div class="projects-wrapper">
+      <div class="projects-grid">
+        {% for project in project_data %}
+          <!-- Обновленная карточка проекта -->
+          <div class="project-card" data-status="{{ project.project.status }}">
+            <div class="project-header">
+              <div>
+                <h3 class="project-title">{{ project.project.title }}</h3>
+              </div>
+              {% if project.project.status == 'AC' %}
+                <span class="project-status status-active">Активный</span>
+              {% elif project.project.status == 'CO' %}
+                <span class="project-status status-completed">Завершен</span>
+              {% else %}
+                <span class="project-status status-paused">Приостановлен</span>
+              {% endif %}
+            </div>
+
+            <div class="project-content">
+              <p class="project-description">{{ project.project.description }}</p>
+
+              <div class="project-dates">
+                <div class="date-item">
+                  <span class="date-label">Начало:</span>
+                  <span class="date-value">{{ project.project.start_date }}</span>
+                </div>
+                <div class="date-item">
+                  <span class="date-label">Окончание:</span>
+                  <span class="date-value">{{ project.project.end_date }}</span>
+                </div>
+              </div>
+
+              <div class="project-progress">
+                <div class="progress-header">
+                  <span class="progress-label">Прогресс</span>
+                  <span class="progress-value">{{ project.progress }}%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: {{ project.progress }}%;"></div>
+                </div>
+              </div>
+
+              <div class="project-tasks">
+                <h4 class="tasks-title">Задачи проекта</h4>
+                <ul class="tasks-list">
+                  {% for task in project.tasks %}
+                    <li class="task-item">
+                      <span class="task-title">{{ task.title }}</span>
+                      <span class="task-status status-{{ task.status|lower }}">
+                        {% if task.status == 'NS' %}
+                          Не начато
+                        {% elif task.status == 'IP' %}
+                          В процессе
+                        {% else %}
+                          Завершено
+                        {% endif %}
+                      </span>
+                    </li>
+                  {% empty %}
+                    <li class="task-item">Нет задач</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+
+            <div class="project-footer">
+              <div class="team-members">
+                {% for member in project.team_members|slice:':3' %}
+                  <img src="{{ member.avatar }}" alt="{{ member.name }}" class="member-avatar" />
+                {% endfor %}
+                {% if project.team_members|length > 3 %}
+                  <span class="more-members">+{{ project.team_members|length|add:'-3' }}</span>
+                {% endif %}
+              </div>
+              <div class="project-deadline">
+                <span class="material-symbols-rounded deadline-icon">schedule</span>
+                {% if project.days_until_end > 0 %}
+                  {{ project.days_until_end }} дней
+                {% elif project.days_until_end == 0 %}
+                  Сегодня
+                {% elif project.days_until_end < 0 %}
+                  {% if project.project.status == 'CO' %}
+                    Завершен
+                  {% else %}
+                    Просрочено на {{ project.days_until_end|abs_value }} дней
+                  {% endif %}
+                {% else %}
+                  Завершен
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Пагинация -->
+    <div class="pagination">
+      <div class="pagination-numbers">
+        {% for page_num in projects_page.paginator.page_range %}
+          <button class="page-number {% if page_num == projects_page.number %}active{% endif %}"
+            onclick="window.location.href='?page={{ page_num }}{% if request.GET.q %}
+              
+
+              &q={{ request.GET.q }}
+            {% endif %}{% if request.GET.status %}
+              
+
+              &status={{ request.GET.status }}
+            {% endif %}'">
+            {{ page_num }}
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Всплывающая форма добавления проекта -->
+    {% include './dashboard_popup.html' %}
+
+    <script src="{% static 'js/projects.js' %}"></script>
+    <script src="{% static 'js/animations.js' %}"></script>
+    <script src="{% static 'js/popup.js' %}"></script>
+  </main>
+{% endblock %}

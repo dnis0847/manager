@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'styles/main.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/tasks.css' %}" />
+  <link rel="stylesheet" href="{% static 'styles/task_detail.css' %}" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded" rel="stylesheet" />
+{% endblock %}
+
+{% block content %}
+  {% include './sidebar.html' %}
+  <main class="main-content">
+    <header class="main-header">
+      <div class="header-left">
+        <h1>{{ task.title }}</h1>
+        <p class="subtitle">Детали задачи</p>
+      </div>
+      <a href="{% url 'tasks' %}" class="primary-btn">
+        <span class="material-symbols-rounded">arrow_back</span>
+        Вернуться к задачам
+      </a>
+    </header>
+
+    <div class="task-detail">
+      <div class="task-info">
+        <div class="task-field">
+          <h3>Описание</h3>
+          <p>{{ task.description }}</p>
+        </div>
+        <div class="task-field">
+          <h3>Проект</h3>
+          <p>{{ task.project.title }}</p>
+        </div>
+        <div class="task-field">
+          <h3>Статус</h3>
+          <p class="task-status {{ task.status }}">
+            {% if task.status == 'NS' %}
+              Не начато
+            {% elif task.status == 'IP' %}
+              В процессе
+            {% else %}
+              Завершено
+            {% endif %}
+          </p>
+        </div>
+        <div class="task-field">
+          <h3>Приоритет</h3>
+          <p class="task-priority {{ task.priority }}">
+            {% if task.priority == 'HI' %}
+              Высокий
+            {% elif task.priority == 'ME' %}
+              Средний
+            {% else %}
+              Низкий
+            {% endif %}
+          </p>
+        </div>
+        <div class="task-field">
+          <h3>Назначено</h3>
+          <p>{{ task.assigned_to.username }}</p>
+        </div>
+        <div class="task-field">
+          <h3>Дата начала</h3>
+          <p>{{ task.start_date }}</p>
+        </div>
+        <div class="task-field">
+          <h3>Дата окончания</h3>
+          <p>{{ task.end_date }}</p>
+        </div>
+      </div>
+
+      <div class="task-comments">
+        <h2>Комментарии</h2>
+        <div class="comments-list">
+          {% for comment in comments %}
+            <div class="comment">
+              <div class="comment-header">
+                <span class="comment-author">{{ comment.user.username }}</span>
+                <span class="comment-date">{{ comment.created_at }}</span>
+              </div>
+              <p class="comment-text">{{ comment.text }}</p>
+            </div>
+          {% empty %}
+            <p>Нет комментариев</p>
+          {% endfor %}
+        </div>
+        <form class="comment-form" method="POST" action="{% url 'add_comment' task.id %}">
+          {% csrf_token %}
+          <textarea name="comment_text" placeholder="Добавить комментарий" required></textarea>
+          <button type="submit" class="primary-btn">
+            <span class="material-symbols-rounded">send</span>
+            Отправить
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+{% endblock %}

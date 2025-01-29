@@ -1,5 +1,5 @@
 from django import forms
-from .models import Project
+from .models import Project, Task
 
 class LoginForm(forms.Form):
     login = forms.CharField(widget=forms.TextInput(attrs={
@@ -21,3 +21,23 @@ class ProjectForm(forms.ModelForm):
             'start_date': forms.DateInput(attrs={'type': 'date'}),
             'end_date': forms.DateInput(attrs={'type': 'date'}),
         }
+        
+        
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['title', 'description', 'project', 'priority', 'status', 'start_date', 'end_date', 'assigned_to']
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+            'description': forms.Textarea(attrs={'rows': 3}),
+            'project': forms.Select(attrs={'class': 'form-control'}),
+            'priority': forms.Select(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-control'}),
+            'assigned_to': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(TaskForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control'})

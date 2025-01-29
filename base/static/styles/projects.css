@@ -235,6 +235,62 @@
   color: var(--text-primary);
 }
 
+/* Новые стили для списка задач */
+.project-tasks {
+  margin-top: 1rem;
+}
+
+.tasks-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.tasks-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.task-item:last-child {
+  border-bottom: none;
+}
+
+.task-title {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.task-status {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+}
+
+.status-not-started {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
+.status-in-progress {
+  background-color: var(--accent-light);
+  color: var(--accent);
+}
+
+.status-completed {
+  background-color: var(--success);
+  color: white;
+}
+
 /* Адаптивность для дат */
 @media (max-width: 480px) {
   .project-dates {

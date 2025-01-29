@@ -218,6 +218,23 @@ h2 {
   border: 2px solid var(--bg-primary);
 }
 
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.header-left h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
 /* Сетка статистики */
 .stats-grid {
   display: grid;
@@ -294,6 +311,7 @@ h2 {
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
+  text-decoration: none;
 }
 
 .primary-btn:hover {
@@ -384,7 +402,7 @@ h2 {
     border-radius: var(--border-radius);
     padding: 0.5rem;
     cursor: pointer;
-}
+  }
 }
 
 @media (max-width: 768px) {

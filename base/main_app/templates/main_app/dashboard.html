@@ -22,19 +22,15 @@
     <!-- Основной контент -->
     <main class="main-content">
       <header class="main-header">
+        <div class="header-left">
+          <h1>Активные проекты</h1>
+          <p class="subtitle">Обзор активных проектов</p>
+        </div>
         <div class="search-bar">
           <form class="form_search" method="GET" action="{% url 'dashboard' %}">
             <input type="text" name="q" placeholder="Поиск..." value="{{ request.GET.q }}" />
             <button class="search_button" type="submit"><span class="material-symbols-rounded">search</span></button>
           </form>
-        </div>
-
-        <div class="header-actions">
-          <button class="icon-btn">
-            <span class="material-symbols-rounded">notifications</span>
-            <span class="badge">3</span>
-          </button>
-          <button class="icon-btn"><span class="material-symbols-rounded">settings</span></button>
         </div>
       </header>
 
@@ -59,8 +55,8 @@
         <section class="projects-section">
           <div class="section-header">
             <h2>Текущие проекты</h2>
-            {% if user_role == "EX" %}
-              <button disabled class="disabled-btn" data-action="create-project">
+            {% if user_role == 'EX' %}
+              <button class="disabled-btn" data-action="create-project">
                 <span class="material-symbols-rounded">add</span>
                 Новый проект
               </button>

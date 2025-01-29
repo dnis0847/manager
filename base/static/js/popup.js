@@ -4,6 +4,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeButtons = popup.querySelectorAll('.close-popup, .btn-secondary');
   const form = document.getElementById('createProjectForm');
 
+  // Обработка клика на отключенную кнопку
+  const disabledBtn = document.querySelector('.disabled-btn');
+  if (disabledBtn) {
+    disabledBtn.addEventListener('click', () => {
+      alert('Вы не можете создать проект, так как у вас нет прав администратора или менеджера проекта.');
+    });
+    return;
+  }
+
   // Открытие popup
   createButtons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -59,9 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         const errorData = await response.json();
         console.error('Ошибка при создании проекта:', response.statusText, errorData);
+        alert(`Ошибка при создании проекта: ${errorData.errors || response.statusText}`);
       }
     } catch (error) {
       console.error('Ошибка при создании проекта:', error);
+      alert('Произошла ошибка при создании проекта. Пожалуйста, попробуйте еще раз.');
     }
   });
 });
