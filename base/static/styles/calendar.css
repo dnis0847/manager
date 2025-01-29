@@ -1,0 +1,364 @@
+:root {
+  --accent-dark: #2c3e50;
+  --success-dark: #27ae60;
+}
+
+/* Основной контейнер календаря */
+.calendar-container {
+  display: flex;
+  gap: 2rem;
+  height: calc(100vh - 180px);
+}
+
+/* Боковая панель календаря */
+.calendar-sidebar {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Мини-календарь */
+.mini-calendar {
+  background: var(--bg-primary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
+}
+
+.mini-calendar-header {
+  margin-bottom: 1rem;
+}
+
+.mini-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.mini-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.mini-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mini-day:not(.empty):hover {
+  background: var(--bg-secondary);
+  color: var(--accent);
+}
+
+.mini-day.empty {
+  cursor: default;
+}
+
+.mini-day.today {
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.mini-day.selected {
+  background: var(--accent);
+  color: white;
+  font-weight: 500;
+}
+
+/* Навигация календаря */
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.current-date {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Фильтры календаря */
+.calendar-filters {
+  background: var(--bg-primary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
+}
+
+.calendar-filters h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.filter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.filter-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* Ближайшие события */
+.upcoming-events {
+  background: var(--bg-primary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.upcoming-events h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+/* Основная сетка календаря */
+.calendar-main {
+  flex: 1;
+  background: var(--bg-primary);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 1rem;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  flex: 1;
+  gap: 1px;
+  background: var(--border);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.calendar-day {
+  background: var(--bg-primary);
+  padding: 0.75rem;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.day-number {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.calendar-day.other-month {
+  background: var(--bg-secondary);
+}
+
+.calendar-day.today {
+  background: var(--accent-light);
+}
+
+.calendar-day.today .day-number {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* События в календаре */
+.event-item {
+  padding: 0.5rem;
+  border-radius: var(--border-radius);
+  font-size: 0.75rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.event-item:hover {
+  filter: brightness(1.1);
+}
+
+.event-meeting {
+  background: var(--accent);
+}
+.event-deadline {
+  background: var(--success);
+}
+.event-reminder {
+  background: var(--warning);
+}
+
+/* События в календаре */
+.event-item {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.event-item:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Цвета для разных типов событий */
+.event-project {
+  background: var(--accent);
+  border-left: 3px solid var(--accent-dark);
+}
+
+.event-task {
+  background: var(--success);
+  border-left: 3px solid var(--success-dark);
+}
+
+/* Дополнительные типы событий */
+.event-meeting {
+  background: #4a90e2;
+  border-left: 3px solid #3a70b2;
+}
+
+.event-deadline {
+  background: #e74c3c;
+  border-left: 3px solid #c0392b;
+}
+
+.event-reminder {
+  background: #f39c12;
+  border-left: 3px solid #d35400;
+}
+
+/* Стили для событий в списке ближайших событий */
+.upcoming-events .event-item {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.675rem;
+}
+
+.upcoming-events .event-date {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.upcoming-events .event-title {
+  margin-bottom: 0.25rem;
+}
+
+.upcoming-events .event-time {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+/* Адаптивность */
+@media (max-width: 1200px) {
+  .calendar-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .calendar-sidebar {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .mini-calendar,
+  .calendar-filters,
+  .upcoming-events {
+    flex: 1;
+    min-width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .calendar-day {
+    min-height: 100px;
+    padding: 0.5rem;
+  }
+
+  .event-item {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.7rem;
+  }
+
+  .upcoming-events .event-item {
+    padding: 0.4rem;
+    font-size: 0.8rem;
+  }
+
+  .calendar-grid {
+    overflow: scroll;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-sidebar {
+    flex-direction: column;
+  }
+
+  .mini-calendar,
+  .calendar-filters,
+  .upcoming-events {
+    width: 100%;
+  }
+}

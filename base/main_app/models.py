@@ -37,17 +37,16 @@ class Project(models.Model):
         total_tasks = self.task_set.count()
         if total_tasks == 0:
             return 0
-        completed_tasks = self.task_set.filter(status=Task.Status.COMPLETED).count()
+        completed_tasks = self.task_set.filter(
+            status=Task.Status.COMPLETED).count()
         progress = round((completed_tasks / total_tasks) * 100)
         return progress
-    
-    
+
     def days_until_end(self):
         today = date.today()
         end_date = self.end_date
         delta = end_date - today
         return delta.days
-    
 
     def __str__(self):
         return self.title
@@ -123,6 +122,15 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def get_role_display(self):
+        return dict(Role.choices).get(self.role, 'Unknown')
+    
+    def get_active_tasks_count(self):
+        return Task.objects.filter(assigned_to=self.user, status=Task.Status.IN_PROGRESS).count()
+
+    def get_completed_tasks_count(self):
+        return Task.objects.filter(assigned_to=self.user, status=Task.Status.COMPLETED).count()
 
     class Meta:
         verbose_name = 'Профиль'

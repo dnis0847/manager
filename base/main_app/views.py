@@ -16,6 +16,8 @@ from django.core.exceptions import PermissionDenied
 import logging
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import get_object_or_404
+from django.core.serializers.json import DjangoJSONEncoder
+
 
 logger = logging.getLogger(__name__)
 
@@ -366,11 +368,67 @@ def edit_task(request, task_id):
 
 
 def teams_view(request):
+    all_teams = UserProfile.objects.all()
+    all_teams_count = UserProfile.objects.all().count()
+    in_progress_tasks_count = Task.objects.filter(status='IP').count()
+    completed_tasks_count = Task.objects.filter(status='CO').count()
+
     context = {
         'title': f'Projects Box | Команда',
+        'all_teams': all_teams,
+        'all_teams_count': all_teams_count,
+        'in_progress_tasks_count': in_progress_tasks_count,
+        'completed_tasks_count': completed_tasks_count
     }
-    
+
     return render(request, 'main_app/team.html', context)
+
+
+@login_required
+def get_events(request):
+    events = []
+
+    # Получение событий из проектов
+    projects = Project.objects.all()
+    for project in projects:
+        events.append({
+            'id': f'project_start_{project.id}',
+            'title': f'Проект: {project.title}',
+            'date': project.start_date.isoformat(),
+            'type': 'project'
+        })
+        events.append({
+            'id': f'project_end_{project.id}',
+            'title': f'Проект: {project.title} (Завершение)',
+            'date': project.end_date.isoformat(),
+            'type': 'project'
+        })
+
+    # Получение событий из задач
+    tasks = Task.objects.all()
+    for task in tasks:
+        events.append({
+            'id': f'task_start_{task.id}',
+            'title': f'Задача: {task.title}',
+            'date': task.start_date.isoformat(),
+            'type': 'task'
+        })
+        events.append({
+            'id': f'task_end_{task.id}',
+            'title': f'Задача: {task.title} (Завершение)',
+            'date': task.end_date.isoformat(),
+            'type': 'task'
+        })
+
+    return JsonResponse(events, safe=False)
+
+
+def calendar_view(request):
+    context = {
+        'title': f'Projects Box | Календарь событий',
+    }
+
+    return render(request, 'main_app/calendar.html', context)
 
 
 def logout_view(request):

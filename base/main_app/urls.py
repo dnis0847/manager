@@ -16,5 +16,7 @@ urlpatterns = [
     path('task/<int:task_id>/add_comment/',
          views.add_comment, name='add_comment'),
     path('teams', views.teams_view, name='teams'),
+    path('get_events/', views.get_events, name='get_events'),
+    path('calendar', views.calendar_view, name='calendar'),
     path('logout', views.logout_view, name='logout'),
 ]

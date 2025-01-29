@@ -109,7 +109,6 @@
   top: 0;
   left: 0;
   width: 4px;
-  height: 100%;
   border-top-left-radius: var(--border-radius);
   border-bottom-left-radius: var(--border-radius);
 }
@@ -192,8 +191,7 @@
 .task-menu {
   display: flex;
   flex-direction: column;
-  gap:10px;
-  
+  gap: 10px;
 }
 
 .task-menu-item {

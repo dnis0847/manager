@@ -64,7 +64,6 @@
 .task-priority {
   position: static;
   width: fit-content;
-  height: 100%;
   border-top-left-radius: var(--border-radius);
   border-bottom-left-radius: var(--border-radius);
 }
