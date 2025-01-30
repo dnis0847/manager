@@ -1,3 +1,5 @@
+{% load static %}
+
 <aside class="sidebar">
   <div class="sidebar-header">
     <a href="{% url 'index' %}">
@@ -25,7 +27,7 @@
       <span class="material-symbols-rounded">group</span>
       <span>Команда</span>
     </a>
-    <a href="{% url 'calendar' %}" class="nav-item">
+    <a href="{% url 'calendar' %}" class="nav-item {% if request.path == '/calendar' %}active{% endif %}">
       <span class="material-symbols-rounded">calendar_month</span>
       <span>Календарь</span>
     </a>
@@ -33,11 +35,14 @@
 
   <div class="sidebar-footer">
     <div class="user-profile">
-      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Profile" class="avatar" />
+      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ request.user.username }}&backgroundColor=b6e3f4,c0aede,d1d4f9" alt="Profile" class="avatar" />
       <div class="user-info">
-        <h4>Алекс Миллер</h4>
-        <p>Дизайнер</p>
+        <h4>{{ request.user.get_full_name }}</h4>
+        <p>{{ request.user.userprofile.get_role_display }}</p>
       </div>
+    </div>
+    <div class="user-actions">
+      <a href="{% url 'logout' %}" class="action-button" title="Выйти"><span class="material-symbols-rounded">logout</span></a>
     </div>
   </div>
 </aside>

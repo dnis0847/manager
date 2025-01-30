@@ -25,7 +25,12 @@
   </div>
   <div class="task-footer">
     <div class="task-assignee">
-      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed={{ task.task.assigned_to.username }}" alt="Assignee" />
+      <span class="material-symbols-rounded">person</span>
+      {% if task.task.assigned_to %}
+        {{ task.task.assigned_to.get_full_name }}
+      {% else %}
+        Не назначено
+      {% endif %}
     </div>
     {% if user_role != 'EX' %}
       <div class="task-actions">
@@ -38,3 +43,31 @@
     {% endif %}
   </div>
 </div>
+
+{% comment %} {% load static %}
+<div class="task-card">
+  <div class="task-title">
+    <h3>{{ task.task.title }}</h3>
+  </div>
+  <div class="task-meta">
+    <span class="task-due-date">Due: {{ task.task.due_date }}</span>
+    <span class="task-status">Status: {{ task.task.get_status_display }}</span>
+  </div>
+
+  <div class="task-description">
+    <p>{{ task.task.description }}</p>
+  </div>
+</div> {% endcomment %}
+<style>
+  .task-assignee {
+    display: flex;
+    align-items: center;
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 0.5em;
+  }
+  .task-assignee .material-symbols-rounded {
+    font-size: 1.2em;
+    margin-right: 0.3em;
+  }
+</style>

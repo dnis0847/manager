@@ -1,5 +1,6 @@
 from django import forms
 from .models import Project, Task
+from django.contrib.auth.models import User
 
 class LoginForm(forms.Form):
     login = forms.CharField(widget=forms.TextInput(attrs={
@@ -12,6 +13,63 @@ class LoginForm(forms.Form):
     }))
     remember = forms.BooleanField(required=False)
 
+
+class RegisterForm(forms.Form):
+    login = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Введите логин',
+        'required': True,
+        'id': 'login',
+    }))
+    firstName = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Введите имя',
+        'required': True,
+        'id': 'firstName',
+    }))
+    lastName = forms.CharField(widget=forms.TextInput(attrs={
+        'placeholder': 'Введите фамилию',
+        'required': True,
+        'id': 'lastName',
+    }))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={
+        'placeholder': 'Введите email',
+        'required': True,
+        'id': 'email',
+    }))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': 'Создайте пароль',
+        'required': True,
+        'id': 'password',
+    }))
+    confirmPassword = forms.CharField(widget=forms.PasswordInput(attrs={
+        'placeholder': 'Повторите пароль',
+        'required': True,
+        'id': 'confirmPassword',
+    }))
+    terms = forms.BooleanField(required=True)
+
+    def clean_login(self):
+        login = self.cleaned_data['login']
+        if User.objects.filter(username=login).exists():
+            raise forms.ValidationError("Пользователь с таким логином уже существует")
+        return login
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("Пользователь с таким email уже существует")
+        return email
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirmPassword")
+
+        if password and confirm_password and password != confirm_password:
+            raise forms.ValidationError("Пароли не совпадают")
+
+        return cleaned_data
+
+    
 
 class ProjectForm(forms.ModelForm):
     class Meta:

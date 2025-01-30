@@ -81,21 +81,6 @@
         </div>
         {% endif %}
 
-        <div class="auth-divider">
-          <span>или</span>
-        </div>
-
-        <div class="social-auth">
-          <button class="social-button google">
-            <img src="{% static 'images/google-icon.svg' %}" alt="Google" />
-            Войти через Google
-          </button>
-          <button class="social-button github">
-            <img src="{% static 'images/github-icon.svg' %}" alt="GitHub" />
-            Войти через GitHub
-          </button>
-        </div>
-
         <p class="auth-footer">
           Ещё нет аккаунта?
           <a href="{% url "register" %}">Зарегистрироваться</a>

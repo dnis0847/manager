@@ -28,7 +28,7 @@
 }
 
 .task-status,
-.task-priority {
+.task-prioritet {
   display: inline-block;
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
@@ -48,20 +48,20 @@
   color: white;
 }
 
-.task-priority.HI {
+.task-prioritet.HI {
   background: var(--error);
   color: white;
 }
-.task-priority.ME {
+.task-prioritet.ME {
   background: var(--warning);
   color: white;
 }
-.task-priority.LO {
+.task-prioritet.LO {
   background: var(--success);
   color: white;
 }
 
-.task-priority {
+.task-prioritet {
   position: static;
   width: fit-content;
   border-top-left-radius: var(--border-radius);

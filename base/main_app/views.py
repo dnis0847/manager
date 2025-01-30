@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
-from .models import Project, Task, Comment, UserProfile, User
-from .forms import LoginForm, ProjectForm, TaskForm
+from .models import Project, Task, Comment, UserProfile, User, Role
+from .forms import LoginForm, ProjectForm, TaskForm, RegisterForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
@@ -56,7 +56,23 @@ def login_view(request):
 
 def register_view(request):
     title = 'Projects Box | Регистрация'
-    return render(request, 'main_app/register.html', {'title': title})
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(
+                username=form.cleaned_data['login'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password'],
+                first_name=form.cleaned_data['firstName'],
+                last_name=form.cleaned_data['lastName']
+            )
+            messages.success(
+                request, 'Аккаунт успешно создан. Теперь вы можете войти.')
+            return redirect('login')
+    else:
+        form = RegisterForm()
+
+    return render(request, 'main_app/register.html', {'title': title, 'form': form})
 
 
 @login_required
